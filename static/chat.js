@@ -5,7 +5,7 @@ if (window.location.protocol == "https:") {
   var ws_scheme = "ws://"
 };
 
-var ws = new ReconnectingWebSocket(ws_scheme + location.host + "/ws");
+var ws = new WebSocket(ws_scheme + location.host + "/ws");
 
 // var ws = new WebSocket("wss://127.0.0.1:5000/ws");
 
