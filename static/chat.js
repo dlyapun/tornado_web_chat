@@ -1,11 +1,11 @@
 // Support TLS-specific URLs, when appropriate.
 if (window.location.protocol == "https:") {
-  var ws_scheme = "wss://";
+  var ws_scheme = "wss://" + location.host + "/ws";
 } else {
-  var ws_scheme = "ws://"
+  var ws_scheme = "ws://" + location.host + "/ws"
 };
 
-var ws = new WebSocket(ws_scheme + location.host + "/ws");
+var ws = new ReconnectingWebSocket(ws_scheme);
 
 // var ws = new WebSocket("wss://127.0.0.1:5000/ws");
 
