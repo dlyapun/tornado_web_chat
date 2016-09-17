@@ -195,17 +195,11 @@ class WebSocketHandler(BaseHandler, tornado.websocket.WebSocketHandler):
 
     def send_messages(self, msg, date):
         for conn in self.connections:
-            try:
-                conn.write_message({'name': self.current_user, 'msg': msg, 'date': date})
-            except WebSocketClosedError:
-                pass
+            conn.write_message({'name': self.current_user, 'msg': msg, 'date': date})
 
     def bot_send_messages(self, msg, date):
         for conn in self.connections:
-            try:
-                conn.write_message({'name': self.application.bot.get_bot_name(), 'msg': msg, 'date': date})
-            except WebSocketClosedError:
-                pass
+            conn.write_message({'name': self.application.bot.get_bot_name(), 'msg': msg, 'date': date})
 
 
 class LoginHandler(tornado.web.RequestHandler):
