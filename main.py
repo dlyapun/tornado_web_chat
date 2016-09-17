@@ -172,6 +172,7 @@ class WebSocketHandler(BaseHandler, tornado.websocket.WebSocketHandler):
         except KeyError:
             pass
 
+        self.callback.stop()
         WebSocketHandler.connections.remove(self)
 
     def on_message(self, msg):
@@ -194,9 +195,7 @@ class WebSocketHandler(BaseHandler, tornado.websocket.WebSocketHandler):
             self.bot_send_messages(bot_message, date)
 
     def send_messages(self, msg, date):
-        print "DEBUG HERE"
         for conn in self.connections:
-            print conn
             conn.write_message({'name': self.current_user, 'msg': msg, 'date': date})
 
     def bot_send_messages(self, msg, date):

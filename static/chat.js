@@ -19,7 +19,7 @@ ws.onmessage = function (evt) {
     //     ':</b></td><td class="col-md-8">' + msg +'</td><td class="col-md-8">' + date +'</td></tr>'
     // );
     $('#message_media_id').append(
-        '<li class="media message_media"> <div class="media-body"> <div class="media"> <div class="media-body"> <small class="text-muted"><strong>'+ name +'</strong> | '+date+'</small><br /> '+ msg +' <hr /> </div> </div> </div> </li>'
+        '<li class="media message_media"> <div class="media-body"> <div class="media"> <div class="media-body"> <small class="text-muted"><strong>'+ name +'</strong> | '+date+'</small><br /> '+ msg +' </div> </div> </div> </li>'
     );
     var n = $(document).height();
     $('html, body').animate({ scrollTop: n });
@@ -36,6 +36,10 @@ ws.onclose = function(event) {
 
 ws.onerror = function(error) {
   alert("Ошибка " + error.message);
+};
+
+ws.onopen = function() {
+  alert("Соединение установлено.");
 };
 
 
