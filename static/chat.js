@@ -25,6 +25,19 @@ ws.onmessage = function (evt) {
     $('html, body').animate({ scrollTop: n });
 };
 
+ws.onclose = function(event) {
+  if (event.wasClean) {
+    alert('Соединение закрыто чисто');
+  } else {
+    alert('Обрыв соединения'); // например, "убит" процесс сервера
+  }
+  alert('Код: ' + event.code + ' причина: ' + event.reason);
+};
+
+ws.onerror = function(error) {
+  alert("Ошибка " + error.message);
+};
+
 
 $('#msg_form').submit(function(){
     $message = $("input[name='msg']")

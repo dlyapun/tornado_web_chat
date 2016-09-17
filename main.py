@@ -194,14 +194,14 @@ class WebSocketHandler(BaseHandler, tornado.websocket.WebSocketHandler):
             self.bot_send_messages(bot_message, date)
 
     def send_messages(self, msg, date):
+        print "DEBUG HERE"
         for conn in self.connections:
-            conn.write_message(
-                {'name': self.current_user, 'msg': msg, 'date': date})
+            print conn
+            conn.write_message({'name': self.current_user, 'msg': msg, 'date': date})
 
     def bot_send_messages(self, msg, date):
         for conn in self.connections:
-            conn.write_message(
-                {'name': self.application.bot.get_bot_name(), 'msg': msg, 'date': date})
+            conn.write_message({'name': self.application.bot.get_bot_name(), 'msg': msg, 'date': date})
 
 
 class LoginHandler(tornado.web.RequestHandler):
