@@ -18,10 +18,13 @@ import tornado.websocket
 # from tornado.options import define, options, parse_command_line
 # define('port', default=8000, help='run on the given port', type=int)
 
+MONGODB_URI = 'mongodb://heroku_bdgsxfjt:e393p839uccbuar4qov467qgpb@ds033956.mlab.com:33956/heroku_bdgsxfjt' 
+
 
 class Application(tornado.web.Application):
     def __init__(self):
-        connection = MongoClient('127.0.0.1', 27017)
+        # connection = MongoClient('127.0.0.1', 27017)
+        connection = MongoClient(MONGODB_URI)
         self.db = connection.chat
 
         handlers = [
