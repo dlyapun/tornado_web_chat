@@ -184,8 +184,6 @@ class WebSocketHandler(BaseHandler, tornado.websocket.WebSocketHandler):
                             'channel': data['room'],
                             'message': data['msg']})
 
-        print "======MESSAGE==========="
-        print data['msg']
         self.send_messages(data['msg'], date)
         if data['msg'][0] == '/':
             bot_message = self.application.bot.message_analysis(data['msg'])
@@ -201,7 +199,6 @@ class WebSocketHandler(BaseHandler, tornado.websocket.WebSocketHandler):
                 conn.write_message({'name': self.current_user, 'msg': msg, 'date': date})
             except WebSocketClosedError:
                 pass
-            
 
     def bot_send_messages(self, msg, date):
         for conn in self.connections:
@@ -260,7 +257,7 @@ class LogoutHandler(tornado.web.RequestHandler):
 
 def main():
     # parse_command_line()
-    port = int(os.environ.get("PORT", 8000))
+    port = int(os.environ.get("PORT", 5000))
     app = Application()
     app.listen(port)
     tornado.ioloop.IOLoop.instance().start()
