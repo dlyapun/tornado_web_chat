@@ -23,9 +23,11 @@ MONGODB_URI = 'mongodb://heroku_bdgsxfjt:e393p839uccbuar4qov467qgpb@ds033956.mla
 
 class Application(tornado.web.Application):
     def __init__(self):
+        client = MongoClient(MONGODB_URI)
+        self.db = client.heroku_bdgsxfjt
+
         # connection = MongoClient('127.0.0.1', 27017)
-        connection = MongoClient(MONGODB_URI)
-        self.db = connection.chat
+        # self.db = connection.chat
 
         handlers = [
             (r'/', MainHandler),
