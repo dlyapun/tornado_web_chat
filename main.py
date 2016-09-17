@@ -155,7 +155,7 @@ class WebSocketHandler(BaseHandler, tornado.websocket.WebSocketHandler):
         users = db.channels.find_one({'channel': channel})
         try:
             users = users['users']
-        except KeyError:
+        except KeyError, TypeError:
             users = []
         if not self.current_user in users:
             users += [self.current_user]
@@ -169,7 +169,7 @@ class WebSocketHandler(BaseHandler, tornado.websocket.WebSocketHandler):
             users = users['users']
             users.remove(self.current_user)
             db.channels.update({'channel': channel}, { "$set": { 'users':users } }) 
-        except KeyError:
+        except KeyError, TypeError:
             pass
 
         WebSocketHandler.connections.remove(self)
