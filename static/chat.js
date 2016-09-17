@@ -25,11 +25,6 @@ ws.onmessage = function (evt) {
     $('html, body').animate({ scrollTop: n });
 };
 
-ws.onclose = function(){
-    console.log('ws closed');
-    this.ws = new WebSocket(ws.url);
-
-};
 
 $('#msg_form').submit(function(){
     $message = $("input[name='msg']")
