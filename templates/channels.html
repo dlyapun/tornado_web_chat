@@ -1,0 +1,29 @@
+{% extends base.html %}
+
+{% block body %}
+    <div class="container">
+      <div class="starter-template">
+        <div class="jumbotron">
+        <h1>Channels</h1>
+        {% if channels %}
+          {% for channel in channels %}
+              <p><a href="/channels/{{ channel['channel'] }}">{{ channel['channel'] }}</a></p>
+          {% end %}
+        {% end %}
+        <form accept-charset="UTF-8" action="/channels" method="post">
+          {% module xsrf_form_html() %}
+          <fieldset>
+              <div class="form-group">
+                  <input class="form-control" placeholder="Channels" name="channel" type="text">
+              </div>
+              <input class="btn btn-success btn-block" type="submit" value="find">
+          </fieldset>
+          </form>
+        <p><a href="/create_channel">Create new channel</a></p>
+      </div>
+    </div>
+
+{% end %}
+
+{% block scripts %}
+{% end %}
