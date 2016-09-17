@@ -150,27 +150,27 @@ class WebSocketHandler(BaseHandler, tornado.websocket.WebSocketHandler):
 
     def open(self):
         WebSocketHandler.connections.add(self)
-        db = self.application.db
-        channel = self.get_cookie("channel")
-        users = db.channels.find_one({'channel': channel})
-        try:
-            users = users['users']
-        except KeyError, TypeError:
-            users = []
-        if not self.current_user in users:
-            users += [self.current_user]
-        db.channels.update({'channel': channel}, { "$set": { 'users':users } }) 
+        # db = self.application.db
+        # channel = self.get_cookie("channel")
+        # users = db.channels.find_one({'channel': channel})
+        # try:
+        #     users = users['users']
+        # except KeyError, TypeError:
+        #     users = []
+        # if not self.current_user in users:
+        #     users += [self.current_user]
+        # db.channels.update({'channel': channel}, { "$set": { 'users':users } }) 
 
     def on_close(self):
-        db = self.application.db
-        channel = self.get_cookie("channel")
-        users = db.channels.find_one({'channel': channel})
-        try:
-            users = users['users']
-            users.remove(self.current_user)
-            db.channels.update({'channel': channel}, { "$set": { 'users':users } }) 
-        except KeyError, TypeError:
-            pass
+        # db = self.application.db
+        # channel = self.get_cookie("channel")
+        # users = db.channels.find_one({'channel': channel})
+        # try:
+        #     users = users['users']
+        #     users.remove(self.current_user)
+        #     db.channels.update({'channel': channel}, { "$set": { 'users':users } }) 
+        # except KeyError, TypeError:
+        #     pass
 
         WebSocketHandler.connections.remove(self)
 
