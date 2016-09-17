@@ -172,7 +172,6 @@ class WebSocketHandler(BaseHandler, tornado.websocket.WebSocketHandler):
         except KeyError:
             pass
 
-        self.callback.stop()
         WebSocketHandler.connections.remove(self)
 
     def on_message(self, msg):
@@ -185,18 +184,24 @@ class WebSocketHandler(BaseHandler, tornado.websocket.WebSocketHandler):
                             'channel': data['room'],
                             'message': data['msg']})
 
+        print "======MESSAGE==========="
+        print data['msg']
         self.send_messages(data['msg'], date)
         if data['msg'][0] == '/':
             bot_message = self.application.bot.message_analysis(data['msg'])
             db.messages.insert({'user_name': self.application.bot.get_bot_name(),
                                 'date': date,
-                                'channel': data['room'],
+                                'channel': data['room'],data['msg']
                                 'message': bot_message})
             self.bot_send_messages(bot_message, date)
 
     def send_messages(self, msg, date):
         for conn in self.connections:
-            conn.write_message({'name': self.current_user, 'msg': msg, 'date': date})
+            try:
+                conn.write_message({'name': self.current_user, 'msg': msg, 'date': date})
+            except WebSocketClosedError:
+                pass
+            
 
     def bot_send_messages(self, msg, date):
         for conn in self.connections:
