@@ -191,7 +191,7 @@ class WebSocketHandler(BaseHandler, tornado.websocket.WebSocketHandler):
             bot_message = self.application.bot.message_analysis(data['msg'])
             db.messages.insert({'user_name': self.application.bot.get_bot_name(),
                                 'date': date,
-                                'channel': data['room'],data['msg']
+                                'channel': data['room'],
                                 'message': bot_message})
             self.bot_send_messages(bot_message, date)
 
