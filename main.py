@@ -205,7 +205,10 @@ class WebSocketHandler(BaseHandler, tornado.websocket.WebSocketHandler):
 
     def bot_send_messages(self, msg, date):
         for conn in self.connections:
-            conn.write_message({'name': self.application.bot.get_bot_name(), 'msg': msg, 'date': date})
+            try:
+                conn.write_message({'name': self.application.bot.get_bot_name(), 'msg': msg, 'date': date})
+            except WebSocketClosedError:
+                pass
 
 
 class LoginHandler(tornado.web.RequestHandler):

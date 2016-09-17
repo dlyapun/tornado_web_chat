@@ -27,19 +27,19 @@ ws.onmessage = function (evt) {
 
 ws.onclose = function(event) {
   if (event.wasClean) {
-    alert('Соединение закрыто чисто');
+    console.log('Соединение закрыто чисто');
   } else {
-    alert('Обрыв соединения'); // например, "убит" процесс сервера
+    console.log('Обрыв соединения'); // например, "убит" процесс сервера
   }
-  alert('Код: ' + event.code + ' причина: ' + event.reason);
+  console.log('Код: ' + event.code + ' причина: ' + event.reason);
 };
 
 ws.onerror = function(error) {
-  alert("Ошибка " + error.message);
+  console.log("Ошибка " + error.message);
 };
 
 ws.onopen = function() {
-  alert("Соединение установлено.");
+  console.log("Соединение установлено.");
 };
 
 
