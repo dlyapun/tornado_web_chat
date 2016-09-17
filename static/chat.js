@@ -1,4 +1,4 @@
-var ws = new WebSocket("ws://127.0.0.1:5000/ws");
+var ws = new WebSocket("wss://127.0.0.1:5000/ws");
 
 ws.onmessage = function (evt) {
     var data = JSON.parse(evt.data)
