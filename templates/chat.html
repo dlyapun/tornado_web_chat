@@ -1,53 +1,80 @@
 {% extends base.html %}
 
 {% block body %}
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="">Tornado chat</a>
+      </div>
+      <div id="navbar" ">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/logout">Logout ({{ user }})</a></li>
+          <li><a href="/leave_channel">Leave room</a></l
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-    <nav class="navbar navbar-default">
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="">Tornado room: {{ channel }}, hello {{ user }}</a>
+<div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="panel panel-info">
+            <div class="panel-heading" style="text-transform: uppercase;">
+              {{ channel }}
+            </div>
+            <div class="panel-body">
+              <ul class="media-list" id="message_media_id">
+                {% for message in messages %}
+                  <li class="media message_media">
+                    <div class="media-body">
+                      <div class="media">
+                        <div class="media-body">
+                          <small class="text-muted"><strong>{{ message['user_name'] }}</strong> | {{ message['date'] }}</small><br />
+                          {% raw message['message'] %}
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                {% end %}
+              </ul>
+            </div>
+            <div class="panel-footer">
+                <form id="msg_form">
+                  <div class="row">
+                    <div class="col-xs-10">
+                    <input id="msg_id" type="text" class="form-control" name="msg" placeholder="Your message..." required autocomplete="off">
+                    </div>
+
+                  <button class="btn btn-info" type="submit">SEND</button>
+                  </div>
+                </form>
+            </div>
+          </div>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="/logout">Logout</a></li>
-            <li><a href="/channels">Leave room</a></l
-          </ul>
+
+        <div class="col-md-4">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              ONLINE USERS
+            </div>
+            <div class="panel-body">
+              <ul class="media-list" id="users_media_id">
+                {% for active_user in active_users %}
+                <li class="media">
+                  <div class="media-body">
+                    <div class="media">
+                      <div class="media-body">
+                        <h5>{{ active_user }}</h5>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                {% end %}
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
-    </nav>
-
-    <div class="container">
-        <div class="starter-template">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <td><b>From:</b></td>
-                  <td><b>Messages:</b></td>
-                  <td><b>Date:</b></td>
-                </tr>
-              </thead>
-              <tbody>
-              {% for message in messages %}
-                  <tr>
-                    <td class="col-md-4"><b>{{ message['user_name'] }}</b></td>
-                    <td class="col-md-8">{{ message['message'] }}</td></td>
-                    <td class="col-md-8">{{ message['date'] }}</td></td>
-                  </tr>
-              {% end %}
-              </tbody>
-            </table>
-            <form id="msg_form" style="float:center">
-              <div id="message_form_error_id" class="form-group has-error">
-                <label class="control-label" for="inputError1">Input error, Please write more than 4 characters</label>
-              </div>
-              <div id="message_form_id" class="form-group">
-                <div class="col-sm-5">
-                  <input type="text" class="form-control" name="msg" placeholder="Your message..." required>
-                </div>
-                <button type="submit" class="btn btn-default">Send</button>
-              </div>
-            </form>
-        </div>
     </div>
 
 {% end %}
@@ -55,29 +82,18 @@
 {% block scripts %}
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#message_form_error_id").hide()
-    $('#msg_form').submit(function(){
-        $message = $("input[name='msg']")
-        room = window.location.href.split('/')[4];
-        var msg = $message.val()
-        if (msg.length < 4) {
-            $("#message_form_id").addClass( "has-error" );
-        }
-        else{
-            $message.val('');
+    $('#users_media_id').append(
+      '<li class="media"> <div class="media-body"> <div class="media"> <div class="media-body"> <h5> {{ user }} </h5> </div> </div> </div> </li>'
+    );
 
-            var msg = {
-              msg: msg,
-              room: room
-            };
-
-            var str = JSON.stringify(msg);
-            console.log(str)
-            ws.send(str);
-            return false;
-        }
+    $('#msg_id').typeahead({ source:[
+      "/bot get name",
+      "/bot new posts",
+      "/bot sum of"
+      ] 
     });
 });
+
 </script>
 
 {% end %}

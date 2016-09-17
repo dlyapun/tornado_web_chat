@@ -14,9 +14,12 @@ ws.onmessage = function (evt) {
     var name = data['name']
     var msg = data['msg']
     var date = data['date']
-    $('.table > tbody:last').append(
-        '<tr><td class="col-md-4"><b>' + name +
-        ':</b></td><td class="col-md-8">' + msg +'</td><td class="col-md-8">' + date +'</td></tr>'
+    // $('.table > tbody:last').append(
+    //     '<tr><td class="col-md-4"><b>' + name +
+    //     ':</b></td><td class="col-md-8">' + msg +'</td><td class="col-md-8">' + date +'</td></tr>'
+    // );
+    $('#message_media_id').append(
+        '<li class="media message_media"> <div class="media-body"> <div class="media"> <div class="media-body"> <small class="text-muted"><strong>'+ name +'</strong> | '+date+'</small><br /> '+ msg +' <hr /> </div> </div> </div> </li>'
     );
     var n = $(document).height();
     $('html, body').animate({ scrollTop: n });
@@ -30,7 +33,7 @@ ws.onclose = function(){
 
 $('#msg_form').submit(function(){
     $message = $("input[name='msg']")
-    room = window.location.href.split('/')[4];
+    room = window.location.pathname.split('/')[2];
     var msg = $message.val()
     if (msg.length < 4) {
         $("#message_form_id").addClass( "has-error" );
