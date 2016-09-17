@@ -1,4 +1,13 @@
-var ws = new WebSocket("wss://127.0.0.1:5000/ws");
+// Support TLS-specific URLs, when appropriate.
+if (window.location.protocol == "https:") {
+  var ws_scheme = "wss://";
+} else {
+  var ws_scheme = "ws://"
+};
+
+var ws = new ReconnectingWebSocket(ws_scheme + location.host + "/ws");
+
+// var ws = new WebSocket("wss://127.0.0.1:5000/ws");
 
 ws.onmessage = function (evt) {
     var data = JSON.parse(evt.data)
@@ -11,6 +20,12 @@ ws.onmessage = function (evt) {
     );
     var n = $(document).height();
     $('html, body').animate({ scrollTop: n });
+};
+
+ws.onclose = function(){
+    console.log('ws closed');
+    this.ws = new WebSocket(ws.url);
+
 };
 
 $('#msg_form').submit(function(){
