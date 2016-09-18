@@ -71,7 +71,8 @@ class MainHandler(BaseHandler):
     def get(self):
         if self.current_user:
             self.redirect('/channels')
-        self.render('index.html')
+        else:
+            self.render('index.html')
 
 
 class SearchHandler(BaseHandler):
