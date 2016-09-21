@@ -87,7 +87,9 @@ class SearchHandler(BaseHandler):
         channel = self.get_argument('channel')
         db = self.application.db
         channels = db.channels.find({'channel': channel})
-        self.render('channels.html', user=self.current_user, channels=channels)
+        all_channels = db.channels.find()
+        self.render('search_channels.html', user=self.current_user,
+                    search_channels=channels, all_channels=all_channels)
 
 
 class CreateChannelHandler(tornado.web.RequestHandler):
@@ -160,7 +162,7 @@ class WebSocketHandler(BaseHandler, tornado.websocket.WebSocketHandler):
         #     users = []
         # if not self.current_user in users:
         #     users += [self.current_user]
-        # db.channels.update({'channel': channel}, { "$set": { 'users':users } }) 
+        # db.channels.update({'channel': channel}, { "$set": { 'users':users } })
 
     def on_close(self):
         # db = self.application.db
@@ -169,7 +171,7 @@ class WebSocketHandler(BaseHandler, tornado.websocket.WebSocketHandler):
         # try:
         #     users = users['users']
         #     users.remove(self.current_user)
-        #     db.channels.update({'channel': channel}, { "$set": { 'users':users } }) 
+        #     db.channels.update({'channel': channel}, { "$set": { 'users':users } })
         # except KeyError, TypeError:
         #     pass
 
@@ -196,11 +198,13 @@ class WebSocketHandler(BaseHandler, tornado.websocket.WebSocketHandler):
 
     def send_messages(self, msg, date):
         for conn in self.connections:
-            conn.write_message({'name': self.current_user, 'msg': msg, 'date': date})
+            conn.write_message(
+                {'name': self.current_user, 'msg': msg, 'date': date})
 
     def bot_send_messages(self, msg, date):
         for conn in self.connections:
-            conn.write_message({'name': self.application.bot.get_bot_name(), 'msg': msg, 'date': date})
+            conn.write_message(
+                {'name': self.application.bot.get_bot_name(), 'msg': msg, 'date': date})
 
 
 class LoginHandler(tornado.web.RequestHandler):
